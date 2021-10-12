@@ -1,4 +1,3 @@
-
 # o tutorial do pacote modelR pode ser acessado no link abaixo:
 # https://model-r.github.io/modleR/articles/modleR.html
 
@@ -25,39 +24,39 @@ abio <- stack(list.files("./data/env/", pattern = "tif$", full.names = TRUE))
 
 # configurando os dados ---------------------------------------------------
 sdmdata <- setup_sdmdata(species_name = especie,
-                             occurrences = ocorrencias,
-                             predictors = abio,
-                             models_dir = "./resultados/",
-                             partition_type = "crossvalidation",
-                             cv_partitions = 3,
-                             cv_n = 1,
-                             buffer_type = "maximum",
-                             n_back = 500,
-                             clean_dupl = FALSE,
-                             clean_uni = TRUE,
-                             clean_nas = TRUE,
-                             geo_filt = FALSE,
-                             geo_filt_dist = 10,
-                             select_variables = TRUE,
-                             sample_proportion = 0.005,
-                             cutoff = 0.7)
+                         occurrences = ocorrencias,
+                         predictors = abio,
+                         models_dir = "./resultados/",
+                         partition_type = "crossvalidation",
+                         cv_partitions = 3,
+                         cv_n = 1,
+                         buffer_type = "maximum",
+                         n_back = 500,
+                         clean_dupl = FALSE,
+                         clean_uni = TRUE,
+                         clean_nas = TRUE,
+                         geo_filt = FALSE,
+                         geo_filt_dist = 10,
+                         select_variables = TRUE,
+                         sample_proportion = 0.005,
+                         cutoff = 0.7)
 
 # conferindo
 head(sdmdata)
 
 # gerando os modelos ------------------------------------------------------
 do_many(species_name = especie,
-                predictors = abio,
-                models_dir = "./resultados/",
-                png_partitions = TRUE,
-                write_bin_cut = TRUE,
-                write_rda = TRUE,
-                bioclim = TRUE,
-                glm = TRUE,
-                svmk = TRUE,
-                maxnet = TRUE,
-                rf = TRUE,
-                equalize = TRUE)
+        predictors = abio,
+        models_dir = "./resultados/",
+        png_partitions = TRUE,
+        write_bin_cut = TRUE,
+        write_rda = TRUE,
+        bioclim = TRUE,
+        glm = TRUE,
+        svmk = TRUE,
+        maxnet = TRUE,
+        rf = TRUE,
+        equalize = TRUE)
 
 # juntando os modelos por algoritmo ---------------------------------------
 final_model(species_name = especie,
@@ -70,14 +69,14 @@ final_model(species_name = especie,
 
 # juntando os modelos de cada algoritmo -----------------------------------
 
-ens <- ensemble_model(species_name = especie,
-                      occurrences = ocorrencias,
-                      performance_metric = "pROC",
-                      which_ensemble = c("average", "consensus"),
-                      consensus_level = 0.5,
-                      which_final = "raw_mean",
-                      models_dir = "./resultados/",
-                      overwrite = TRUE)
+ensemble_model(species_name = especie,
+               occurrences = ocorrencias,
+               performance_metric = "pROC",
+               which_ensemble = c("average", "consensus"),
+               consensus_level = 0.5,
+               which_final = "raw_mean",
+               models_dir = "./resultados/",
+               overwrite = TRUE)
 
 
 
