@@ -51,9 +51,6 @@ corrplot(cor_mat_sel, method = "color",
          tl.col = "black", tl.srt = 45,
          diag = FALSE)
 
-# Criando a pasta para receber as variaveis selecionadas
-if(!dir.exists("dados/abioticos/selecionados/presente/")){dir.create("dados/abioticos/selecionados/presente/", recursive = TRUE)}
-
 # Salvando as variáveis no disco
 for(i in 1:nlayers(preditoras_selecionadas)){
   writeRaster(preditoras_selecionadas[[i]],

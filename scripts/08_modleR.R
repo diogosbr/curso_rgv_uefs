@@ -20,7 +20,7 @@ head(ocorrencias)
 especie
 
 # lendo os dados abioticos ------------------------------------------------
-abio <- stack(list.files("./data/env/", pattern = "tif$", full.names = TRUE))
+abio <- stack(list.files("data/env/", pattern = "tif$", full.names = TRUE))
 
 # configurando os dados ---------------------------------------------------
 sdmdata <- setup_sdmdata(species_name = especie,
@@ -71,7 +71,7 @@ final_model(species_name = especie,
 
 ensemble_model(species_name = especie,
                occurrences = ocorrencias,
-               performance_metric = "pROC",
+               performance_metric = "TSSmax",
                which_ensemble = c("average", "consensus"),
                consensus_level = 0.5,
                which_final = "raw_mean",
