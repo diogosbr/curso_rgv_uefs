@@ -12,7 +12,7 @@ library(modleR)
 library(raster)
 
 # lendo os dados de ocorrencias -------------------------------------------
-ocorrencias <- read.csv("./data/occ.csv", stringsAsFactors = FALSE)
+ocorrencias <- read.csv("./dados/ocorrencias/occ.csv", stringsAsFactors = FALSE)
 especie <- unique(ocorrencias$spp)
 
 # conferindo
@@ -20,24 +20,28 @@ head(ocorrencias)
 especie
 
 # lendo os dados abioticos ------------------------------------------------
-abio <- stack(list.files("data/env/", pattern = "tif$", full.names = TRUE))
+abio <- stack(list.files("dados/abioticos/selecionados/presente/", pattern = "tif$", full.names = TRUE))
 
 # configurando os dados ---------------------------------------------------
 sdmdata <- setup_sdmdata(species_name = especie,
                          occurrences = ocorrencias,
+                         lon = "decimalLongitude",
+                         lat = "decimalLatitude",
                          predictors = abio,
                          models_dir = "./resultados/",
                          partition_type = "crossvalidation",
-                         cv_partitions = 3,
+                         cv_partitions = 4,
                          cv_n = 1,
+                         boot_proportion = 0.8,
+                         boot_n = 10,
                          buffer_type = "maximum",
                          n_back = 500,
-                         clean_dupl = FALSE,
+                         clean_dupl = TRUE,
                          clean_uni = TRUE,
                          clean_nas = TRUE,
                          geo_filt = FALSE,
                          geo_filt_dist = 10,
-                         select_variables = TRUE,
+                         select_variables = FALSE,
                          sample_proportion = 0.005,
                          cutoff = 0.7)
 
@@ -48,6 +52,8 @@ head(sdmdata)
 do_many(species_name = especie,
         predictors = abio,
         models_dir = "./resultados/",
+        project_model = TRUE,
+        proj_data_folder = "./dados/abioticos/futuro/",
         png_partitions = TRUE,
         write_bin_cut = TRUE,
         write_rda = TRUE,
@@ -77,6 +83,3 @@ ensemble_model(species_name = especie,
                which_final = "raw_mean",
                models_dir = "./resultados/",
                overwrite = TRUE)
-
-
-
